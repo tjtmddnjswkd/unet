@@ -1,6 +1,6 @@
 # *vessel 데이터를 unet을 사용하여 segmentation해본 repository입니다.*
 
-### 데이터
+### Dataset
 
 ![image](https://user-images.githubusercontent.com/69955858/96858840-bdb25700-149b-11eb-80e1-f206e111e4b7.png)
 ![image](https://user-images.githubusercontent.com/69955858/96858857-c1de7480-149b-11eb-8b25-7f521722bf03.png)
@@ -26,6 +26,6 @@ Channel of mask :
 #### - UNET 사용
 ![image](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FUcMLK%2FbtqDQupfFnY%2F8aCl8icgtwVKERCWfzfK41%2Fimg.png)
 
-### train
+### Train
 
-### test
+### Test
