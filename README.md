@@ -28,4 +28,18 @@ Channel of mask :
 
 ### Train
 
+Optimizer :
+
+    Adam
+
+Loss function :
+
+    BCEWithLogitsLoss
+    
+Resize :
+
+    512 x 512
+    
+Loss :
+
 ### Test
