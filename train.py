@@ -1,5 +1,5 @@
 from unet import UNet
-from dataset import Dataset
+from dataset2 import Dataset
 from transform import Normalization, RandomFlip, ToTensor
 from torchvision import transforms
 from torch.utils.data import DataLoader
@@ -7,27 +7,28 @@ import os
 import torch
 import torch.nn as nn
 import numpy as np
+import wandb
 
 lr = 0.001
-batch_size = 16
+batch_size = 4
 num_epoch = 100
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-data_dir = '/daintlab/data/seungwon/vessel'
-ckpt_dir = '/daintlab/data/seungwon/checkpoint'
+data_dir = '/daintlab/home/tmddnjs3467/workspace/vessel'
+ckpt_dir = '/daintlab/home/tmddnjs3467/workspace/checkpoint'
 
-transform = transforms.Compose([Normalization(mean=0.5, std=0.5), RandomFlip(), 
+transform = transforms.Compose([Normalization(mean=0.5, std=0.5), RandomFlip(),
                                 ToTensor()])
-dataset_train = Dataset(data_dir=os.path.join(data_dir, 'train(64)'), 
+dataset_train = Dataset(data_dir=os.path.join(data_dir, 'train(png)'), 
                         transform=transform)
 loader_train = DataLoader(dataset_train, batch_size=batch_size, shuffle=True,
                           num_workers=8)
 
-dataset_val = Dataset(data_dir=os.path.join(data_dir, 'val(16)'), 
-                      transform=transform)
-loader_val = DataLoader(dataset_val, batch_size=batch_size, shuffle=False, 
-                        num_workers=8)
+# dataset_val = Dataset(data_dir=os.path.join(data_dir, 'val(16)'), 
+#                       transform=transform)
+# loader_val = DataLoader(dataset_val, batch_size=batch_size, shuffle=False, 
+                        # num_workers=8)
 print('input의 shape는\n', dataset_train[0]['input'].shape)
 
 print('label의 shape는\n', dataset_train[0]['label'].shape)
@@ -45,11 +46,11 @@ optim = torch.optim.Adam(net.parameters(), lr=lr)
 
 ###부수적인 variable 생성
 num_data_train = len(dataset_train)
-num_data_val = len(dataset_val)
+# num_data_val = len(dataset_val)
 
 #배치 몇개인지
 num_batch_train = np.ceil(num_data_train / batch_size)
-num_batch_val = np.ceil(num_data_val / batch_size)
+# num_batch_val = np.ceil(num_data_val / batch_size)
 
 ##부수적인 function 생성
 #텐서를 넘파이로
@@ -65,7 +66,7 @@ def save(ckpt_dir, net, optim, epoch):
     os.makedirs(ckpt_dir)
 
   torch.save({'net': net.state_dict(), 'optim': optim.state_dict()},
-              '%s/model_epoch%d(aug)(b16).pth' % (ckpt_dir, epoch))
+              '%s/model_epoch%d(train20)(b4)(new).pth' % (ckpt_dir, epoch))
 
 ##네트워크 불러오는 함수
 def load(ckpt_dir, net, optim):
@@ -105,6 +106,8 @@ def iouscore(output, label):
 st_epoch = 0
 
 # net, optim, st_epoch = load(ckpt_dir=ckpt_dir, net=net, optim=optim)
+wandb.init(config={'epochs':100, 'batch_size':4})
+wandb.watch(net)
 
 for epoch in range(st_epoch + 1, num_epoch + 1):
   ##네트워크에게 트레인이라는 것을 알려줌
@@ -122,35 +125,36 @@ for epoch in range(st_epoch + 1, num_epoch + 1):
 
     loss = fn_loss(output, label)
     loss.backward()
-
+  
     optim.step()
 
     # 손실함수 계산
     loss_arr += [loss.item()]
+    wandb.log({'Train Loss':loss_arr})
     print('TRAIN: EPOCH %04d / %04d | BATCH %04d / %04d | LOSS %.4f ' %
           (epoch, num_epoch, batch, num_batch_train, np.mean(loss_arr)))
     
   #백프로파게이션 validation과정에선 필요없음
-  with torch.no_grad():
-    net.eval()
-    loss_arr = []
-    dice_arr = []
-    for batch, data in enumerate(loader_val, 1):
-      # forward pass
-      label = data['label'].to(device)
-      input = data['input'].to(device)
+  # with torch.no_grad():
+  #   net.eval()
+  #   loss_arr = []
+  #   dice_arr = []
+  #   for batch, data in enumerate(loader_val, 1):
+  #     # forward pass
+  #     label = data['label'].to(device)
+  #     input = data['input'].to(device)
 
-      output = net(input)
+  #     output = net(input)
 
-      #손실함수
-      loss = fn_loss(output, label)
+  #     #손실함수
+  #     loss = fn_loss(output, label)
 
-      loss_arr += [loss.item()]
-      print('VAL: EPOCH %04d / %04d | BATCH %04d / %04d | LOSS %.4f ' %
-          (epoch, num_epoch, batch, num_batch_val, np.mean(loss_arr)))
+  #     loss_arr += [loss.item()]
+  #     print('VAL: EPOCH %04d / %04d | BATCH %04d / %04d | LOSS %.4f ' %
+  #         (epoch, num_epoch, batch, num_batch_val, np.mean(loss_arr)))
     
-  if epoch % 100 == 0:
-    save(ckpt_dir=ckpt_dir, net=net, optim=optim, epoch=epoch)
+  # if epoch % 100 == 0:
+  #   save(ckpt_dir=ckpt_dir, net=net, optim=optim, epoch=epoch)
 
 
 
