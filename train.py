@@ -7,7 +7,8 @@ import os
 import torch
 import torch.nn as nn
 import numpy as np
-import wandb
+# from tensorflow.keras.callbacks import TensorBoard
+# from torch.utils.tensorboard import SummaryWriter
 
 lr = 0.001
 batch_size = 4
@@ -17,18 +18,19 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 data_dir = '/daintlab/home/tmddnjs3467/workspace/vessel'
 ckpt_dir = '/daintlab/home/tmddnjs3467/workspace/checkpoint'
+log_dir = '/daintlab/home/tmddnjs3467/workspace/log'
 
 transform = transforms.Compose([Normalization(mean=0.5, std=0.5), RandomFlip(),
                                 ToTensor()])
-dataset_train = Dataset(data_dir=os.path.join(data_dir, 'train(png)'), 
+dataset_train = Dataset(data_dir=os.path.join(data_dir, 'train(png20)'), 
                         transform=transform)
 loader_train = DataLoader(dataset_train, batch_size=batch_size, shuffle=True,
                           num_workers=8)
 
-# dataset_val = Dataset(data_dir=os.path.join(data_dir, 'val(16)'), 
+# dataset_val = Dataset(data_dir=os.path.join(data_dir, 'val(png)'), 
 #                       transform=transform)
 # loader_val = DataLoader(dataset_val, batch_size=batch_size, shuffle=False, 
-                        # num_workers=8)
+#                         num_workers=8)
 print('input의 shape는\n', dataset_train[0]['input'].shape)
 
 print('label의 shape는\n', dataset_train[0]['label'].shape)
@@ -60,28 +62,26 @@ fn_denorm = lambda x, mean, std: (x * std) + mean
 #클래스분류
 fn_class = lambda x: 1.0 * (x > 0.5)
 
+##Tensorboard를 사용하기 위한 SummaryWriter 설정
+
+# writer_train = SummaryWriter(log_dir=os.path.join(log_dir, 'train'))
+# writer_val = SummaryWriter(log_dir=os.path.join(log_dir, 'val'))
+
 ##네트워크 저장하는 함수
 def save(ckpt_dir, net, optim, epoch):
   if not os.path.exists(ckpt_dir):
     os.makedirs(ckpt_dir)
 
   torch.save({'net': net.state_dict(), 'optim': optim.state_dict()},
-              '%s/model_epoch%d(train20)(b4)(new).pth' % (ckpt_dir, epoch))
+              '%s/model_epoch%d(train20)(b4)(new2).pth' % (ckpt_dir, epoch))
 
 ##네트워크 불러오는 함수
 def load(ckpt_dir, net, optim):
-  if not os.path.exists(ckpt_dir):
-    epoch = 0
-    return net, optim ,epoch
   
-  ckpt_lst = os.listdir(ckpt_dir)
-  ckpt_lst.sort(key=lambda f: int(''.join(filter(str.isdigit, f))))
-  
-  dict_model = torch.load('%s/%s' % (ckpt_dir, ckpt_lst[-2]))
+  dict_model = torch.load('%s/%s' % (ckpt_dir, 'model_epoch100(train20)(b4)(new).pth'))
 
   net.load_state_dict(dict_model['net'])
   optim.load_state_dict(dict_model['optim'])
-  epoch = int(ckpt_lst[-1].split('epoch')[1].split('.pth')[0])
   ##미세조정해서 쓰기위해 에폭 조절.
   epoch = 0
   return net, optim, epoch
@@ -103,12 +103,9 @@ def iouscore(output, label):
   return iou_arr.mean()
 
 
-st_epoch = 0
-
 # net, optim, st_epoch = load(ckpt_dir=ckpt_dir, net=net, optim=optim)
-wandb.init(config={'epochs':100, 'batch_size':4})
-wandb.watch(net)
 
+st_epoch = 0
 for epoch in range(st_epoch + 1, num_epoch + 1):
   ##네트워크에게 트레인이라는 것을 알려줌
   net.train()
@@ -130,11 +127,20 @@ for epoch in range(st_epoch + 1, num_epoch + 1):
 
     # 손실함수 계산
     loss_arr += [loss.item()]
-    wandb.log({'Train Loss':loss_arr})
     print('TRAIN: EPOCH %04d / %04d | BATCH %04d / %04d | LOSS %.4f ' %
           (epoch, num_epoch, batch, num_batch_train, np.mean(loss_arr)))
-    
-  #백프로파게이션 validation과정에선 필요없음
+  #   # Tensorboard 저장하기
+  #   label = fn_tonumpy(label)
+  #   input = fn_tonumpy(fn_denorm(input, mean=0.5, std=0.5))
+  #   output = fn_tonumpy(fn_class(output))
+  #   #라벨 이미지 아웃풋 영상을 텐서보드에 작성하는 부분
+  #   writer_train.add_image('label', label, num_batch_train * (epoch - 1) + batch, dataformats='NHWC')
+  #   writer_train.add_image('input', input, num_batch_train * (epoch - 1) + batch, dataformats='NHWC')
+  #   writer_train.add_image('output', output, num_batch_train * (epoch - 1) + batch, dataformats='NHWC')
+  # #로스를 작성
+  # writer_train.add_scalar('loss', np.mean(loss_arr), epoch)
+
+  # 백프로파게이션 validation과정에선 필요없음
   # with torch.no_grad():
   #   net.eval()
   #   loss_arr = []
@@ -152,9 +158,18 @@ for epoch in range(st_epoch + 1, num_epoch + 1):
   #     loss_arr += [loss.item()]
   #     print('VAL: EPOCH %04d / %04d | BATCH %04d / %04d | LOSS %.4f ' %
   #         (epoch, num_epoch, batch, num_batch_val, np.mean(loss_arr)))
-    
-  # if epoch % 100 == 0:
-  #   save(ckpt_dir=ckpt_dir, net=net, optim=optim, epoch=epoch)
+      # # Tensorboard 저장하기
+      # label = fn_tonumpy(label)
+      # input = fn_tonumpy(fn_denorm(input, mean=0.5, std=0.5))
+      # output = fn_tonumpy(fn_class(output))
+      # #라벨 이미지 아웃풋 영상을 텐서보드에 작성하는 부분
+      # writer_val.add_image('label', label, num_batch_val * (epoch - 1) + batch, dataformats='NHWC')
+      # writer_val.add_image('input', input, num_batch_val * (epoch - 1) + batch, dataformats='NHWC')
+      # writer_val.add_image('output', output, num_batch_val * (epoch - 1) + batch, dataformats='NHWC')
+    # # 로스를 작성
+    # writer_val.add_scalar('loss', np.mean(loss_arr), epoch)
+  if epoch % 100 == 0:
+    save(ckpt_dir=ckpt_dir, net=net, optim=optim, epoch=epoch)
 
 
 
