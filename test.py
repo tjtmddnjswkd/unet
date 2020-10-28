@@ -6,7 +6,7 @@ import os
 import numpy as np 
 from PIL import Image
 from unet import UNet
-
+import wandb
 
 ################test용 데이터셋
 class Dataset(torch.utils.data.Dataset):
@@ -67,9 +67,9 @@ class Normalization(object):
     
     return data
 
-test_dir = '/daintlab/data/seungwon/vessel/test/numpy'
-ckpt_dir = '/daintlab/data/seungwon/checkpoint'
-batch_size = 16
+test_dir = '/daintlab/home/tmddnjs3467/workspace/vessel/test/numpy'
+ckpt_dir = '/daintlab/home/tmddnjs3467/workspace/checkpoint'
+batch_size = 20
 
 transform = transforms.Compose([Normalization(mean=0.5, std=0.5), ToTensor()])
 
@@ -90,10 +90,8 @@ num_batch_test = np.ceil(num_data_test / batch_size)
 
 ##네트워크 불러오는 함수
 def load(ckpt_dir, net):
-#   ckpt_lst = os.listdir(ckpt_dir)
-#   ckpt_lst.sort(key=lambda f: int(''.join(filter(str.isdigit, f))))
-  
-  dict_model = torch.load('%s/%s' % (ckpt_dir, 'model_epoch100(aug)(b16).pth'))
+
+  dict_model = torch.load('%s/%s' % (ckpt_dir, 'model_epoch100(train20)(b4)(new2).pth'))
 
   net.load_state_dict(dict_model['net'])
   
@@ -106,7 +104,7 @@ fn_class = lambda x: 1.0 * (x > 0.5)
 ##test
 import matplotlib.pyplot as plt
 #이미지 저장할 폴더
-result_dir = '/daintlab/data/seungwon/vessel/t64v16b16'
+result_dir = '/daintlab/home/tmddnjs3467/workspace/vessel/t20b4new2'
 
 if not os.path.exists(result_dir):
     os.makedirs(result_dir)
