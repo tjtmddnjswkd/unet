@@ -2,6 +2,8 @@
 
 ### Dataset
 
+Image :
+
 ![image](https://user-images.githubusercontent.com/69955858/96858840-bdb25700-149b-11eb-80e1-f206e111e4b7.png)
 ![image](https://user-images.githubusercontent.com/69955858/96858857-c1de7480-149b-11eb-8b25-7f521722bf03.png)
 
@@ -46,7 +48,6 @@ Loss :
 
 Image : 
 
-    
 ![image](https://user-images.githubusercontent.com/69955858/97461875-83582680-1981-11eb-9425-8b24348c23aa.png)
 ![image](https://user-images.githubusercontent.com/69955858/97461758-61f73a80-1981-11eb-8226-9ded145721f2.png)
 
