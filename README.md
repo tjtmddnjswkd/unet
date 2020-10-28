@@ -30,6 +30,20 @@ Channel of mask :
 
 ### Train
 
+Resize :
+
+    512 x 512
+
+Augmentation :
+
+    fliplr(), flipud() - numpy (좌우, 상하 뒤집기)
+    
+    ChannelShuffle(0.35) - imgaug (채널 섞기)
+    
+    MultiplyAndAddToBrightness(mul=0.7) - imgaug (밝기 조절)
+    
+    다 0.5 확률로 augmentation
+
 Optimizer :
 
     Adam
@@ -37,11 +51,7 @@ Optimizer :
 Loss function :
 
     BCEWithLogitsLoss
-    
-Resize :
-
-    512 x 512
-    
+        
 Loss :
 
 ### Test
