@@ -51,7 +51,8 @@ Image :
 <img src='https://user-images.githubusercontent.com/69955858/97461875-83582680-1981-11eb-9425-8b24348c23aa.png' width='350' height='350'><img src='https://user-images.githubusercontent.com/69955858/97461758-61f73a80-1981-11eb-8226-9ded145721f2.png' width='350' height='350'>
 ### "0" image
     
-dice: 
+dice : 
+      
       "0": 0.7881735933959723,
       
       "1": 0.8267991248299923,
@@ -92,7 +93,7 @@ dice:
       
       "19": 0.7808719782689414
       
-aggregates: 
+aggregates : 
     
     "dice_max": 0.8267991248299923,
     
