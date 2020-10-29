@@ -3,8 +3,6 @@
 ### 의료영상의 자동분할은 의사의 진단에 도움이 될 수 있는 유용한 정보를 추출하는 중요한 단계다. 예를 들어, 망막 혈관을 분할하여 우리가 망막 혈관의 구조를 나타내고 폭을 측정할 수 있도록 할 수 있으며, 이는 망막 질환을 진단하는 데 도움이 될 수 있다. 이 포스트에서는 망막 혈관 영상에 적용되는 영상 분할을 수행하는 Neural baseline을 구현한다.
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ### Dataset
-----------
-Image :
 
 ![image](https://user-images.githubusercontent.com/69955858/96858840-bdb25700-149b-11eb-80e1-f206e111e4b7.png)
 ![image](https://user-images.githubusercontent.com/69955858/96858857-c1de7480-149b-11eb-8b25-7f521722bf03.png)
@@ -14,29 +12,24 @@ Image :
 | 584 x 565|20|3|1|
   
 ### Model
-----------
-#### - UNET 사용
+
+#### UNET 사용
 <img src='https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FUcMLK%2FbtqDQupfFnY%2F8aCl8icgtwVKERCWfzfK41%2Fimg.png' width=700 height=600>
 
 ### Train
------------
 | Resize Shape | Learning Rate| Optimizer  |  Loss Function  |Num of Train| Num of Val|
 |:------------:|:---:|:---:|:--:|:--:|:--:|
 | 512 x 512|0.001|Adam|BCEWithLogitsLoss|16|4|
 
-Loss :
--------
 #### train loss, validation loss
 <img src='https://user-images.githubusercontent.com/69955858/97574479-a42a8580-1a2e-11eb-95a5-c573dcfeab80.png' width=500 height=330> <img src ='https://user-images.githubusercontent.com/69955858/97573974-e0111b00-1a2d-11eb-9e3e-7616d10cf515.png' width=500 height=330>
 
 ### Test
 
-Image : 
-
-#### image 0
+#### input, output of image 0
 <img src='https://user-images.githubusercontent.com/69955858/97461875-83582680-1981-11eb-9425-8b24348c23aa.png' width='300' height='300'> <img src='https://user-images.githubusercontent.com/69955858/97461758-61f73a80-1981-11eb-8226-9ded145721f2.png' width='300' height='300'>
 
-#### image 2
+#### input, output of image 2
 <img src='https://user-images.githubusercontent.com/69955858/97463727-67558480-1983-11eb-8d24-22cac46a4148.png' width='300' height='300'> <img src='https://user-images.githubusercontent.com/69955858/97463746-69b7de80-1983-11eb-8cab-d0c743472c69.png' width='300' height='300'>
 
 
