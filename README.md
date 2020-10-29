@@ -47,7 +47,7 @@ Loss function :
 Loss :
 
 #### train loss
-![image](https://user-images.githubusercontent.com/69955858/97574079-0cc53280-1a2e-11eb-8bef-cace76bf5bf6.png)
+![image](https://user-images.githubusercontent.com/69955858/97574479-a42a8580-1a2e-11eb-95a5-c573dcfeab80.png)
 
 #### validation loss
 ![image](https://user-images.githubusercontent.com/69955858/97573974-e0111b00-1a2d-11eb-9e3e-7616d10cf515.png)
