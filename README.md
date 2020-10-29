@@ -40,8 +40,6 @@ Augmentation :
 
     fliplr(), flipud() - numpy (좌우, 상하 뒤집기)
     
-    ChannelShuffle(0.35) - imgaug (채널 섞기)
-    
     MultiplyAndAddToBrightness(mul=0.7) - imgaug (밝기 조절)
     
     다 0.5 확률로 augmentation
@@ -115,3 +113,11 @@ aggregates :
     
     "dice_mean": 0.7759495474641771
       
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+### 문제점
+
+dropout, Randaugment 등 다양한 방법을 사용했을 때
+loss는 아래와 같이 줄어드는 것을 볼 수 있었는데
+![image](https://user-images.githubusercontent.com/69955858/97519437-9cda8c00-19dc-11eb-8ebf-3589c419dd22.png)
+
+output image가 아래와 같이 괴상하게 나올때가 존재한다.
