@@ -9,21 +9,9 @@ Image :
 ![image](https://user-images.githubusercontent.com/69955858/96858840-bdb25700-149b-11eb-80e1-f206e111e4b7.png)
 ![image](https://user-images.githubusercontent.com/69955858/96858857-c1de7480-149b-11eb-8b25-7f521722bf03.png)
 
-Size :
-
-    584 x 565
-  
-Num of data :
-
-    20
-  
-Channels of input image :
-  
-    3
-  
-Channel of mask :
-  
-    1
+| Size of Image |  Num of Data  |  Channels of Input Image  |Channel of Mask|
+|:------------:|:---:|:---:|:---:|
+| 584 x 565|20|3|1|
   
 ### Model
 
@@ -32,18 +20,10 @@ Channel of mask :
 
 ### Train
 
-Resize :
+| Resize Shape | Learning Rate| Optimizer  |  Loss Function  |Num of Train| Num of Val|
+|:------------:|:---:|:---:|:--:|:--:|:--:|
+| 512 x 512|0.001|Adam|BCEWithLogitsLoss|16|4|
 
-    512 x 512
-
-Optimizer :
-
-    Adam
-
-Loss function :
-
-    BCEWithLogitsLoss
-        
 Loss :
 
 #### train loss, validation loss
