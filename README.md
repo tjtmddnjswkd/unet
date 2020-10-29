@@ -36,14 +36,6 @@ Resize :
 
     512 x 512
 
-Augmentation :
-
-    fliplr(), flipud() - numpy (좌우, 상하 뒤집기)
-    
-    MultiplyAndAddToBrightness(mul=0.7) - imgaug (밝기 조절)
-    
-    다 0.5 확률로 augmentation
-
 Optimizer :
 
     Adam
@@ -53,6 +45,10 @@ Loss function :
     BCEWithLogitsLoss
         
 Loss :
+
+![image](https://user-images.githubusercontent.com/69955858/97574079-0cc53280-1a2e-11eb-8bef-cace76bf5bf6.png)
+
+![image](https://user-images.githubusercontent.com/69955858/97573974-e0111b00-1a2d-11eb-9e3e-7616d10cf515.png)
 
 ### Test
 
