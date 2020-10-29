@@ -13,7 +13,7 @@
   
 ### Model
 
-#### UNET 사용
+##### UNET 사용
 <img src='https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FUcMLK%2FbtqDQupfFnY%2F8aCl8icgtwVKERCWfzfK41%2Fimg.png' width=700 height=600>
 
 ### Train
@@ -21,15 +21,15 @@
 |:------------:|:---:|:---:|:--:|:--:|:--:|
 | 512 x 512|0.001|Adam|BCEWithLogitsLoss|16|4|
 
-#### train loss, validation loss
+##### train loss, validation loss
 <img src='https://user-images.githubusercontent.com/69955858/97574479-a42a8580-1a2e-11eb-95a5-c573dcfeab80.png' width=500 height=330> <img src ='https://user-images.githubusercontent.com/69955858/97573974-e0111b00-1a2d-11eb-9e3e-7616d10cf515.png' width=500 height=330>
 
 ### Test
 
-#### input, output of image 0
+##### input, output of image 0
 <img src='https://user-images.githubusercontent.com/69955858/97461875-83582680-1981-11eb-9425-8b24348c23aa.png' width='300' height='300'> <img src='https://user-images.githubusercontent.com/69955858/97461758-61f73a80-1981-11eb-8226-9ded145721f2.png' width='300' height='300'>
 
-#### input, output of image 2
+##### input, output of image 2
 <img src='https://user-images.githubusercontent.com/69955858/97463727-67558480-1983-11eb-8d24-22cac46a4148.png' width='300' height='300'> <img src='https://user-images.githubusercontent.com/69955858/97463746-69b7de80-1983-11eb-8cab-d0c743472c69.png' width='300' height='300'>
 
 
