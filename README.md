@@ -121,3 +121,9 @@ loss는 아래와 같이 줄어드는 것을 볼 수 있었는데
 ![image](https://user-images.githubusercontent.com/69955858/97519437-9cda8c00-19dc-11eb-8ebf-3589c419dd22.png)
 
 output image가 아래와 같이 괴상하게 나올때가 존재한다.
+
+![output_18](https://user-images.githubusercontent.com/69955858/97519749-14102000-19dd-11eb-8b55-b1e3bda408a4.png)
+
+그리고 augmentation을 진행해도 iou 스코어가 거의 변화가 없다.
+
+따라서 유넷에 조정이 필요해 보인다.
