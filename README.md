@@ -62,4 +62,4 @@
 
 이제 무엇을 적용해야 할지 잘 모르겠다.
 
-<img src='https://user-images.githubusercontent.com/69955858/98187173-abccbb80-1f53-11eb-9358-9d93eb5a0353.png' width=500 height=350>
+<img src='https://user-images.githubusercontent.com/69955858/98187173-abccbb80-1f53-11eb-9358-9d93eb5a0353.png' width=700 height=450>
