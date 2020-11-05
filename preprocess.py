@@ -98,9 +98,9 @@ for i in range(1,21):
         img_input = img_input.resize((512, 512))
 
         input_ = np.asarray(img_input)
-
-        np.save(os.path.join('%s/test/numpy' % data_dir, 'input_%02d.npy' % (i) ), input_)
-
+        
+        plt.imsave(os.path.join(result_dir, 'output_%02d.png' % i), result_, cmap='gray')
+        
 # ##실제 input label 확인
 # plt.subplot(121)
 # plt.imshow(label_, cmap='gray')

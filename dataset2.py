@@ -6,15 +6,6 @@ from PIL import Image
 import imgaug.augmenters as iaa
 import matplotlib.pyplot as plt
 
-# ##데이터셋 png파일로 다 저장하기
-# for i in range(1,21):
-#         img_input = Image.open(os.path.join('/daintlab/home/tmddnjs3467/workspace/vessel/test/images', '%02d_test.tif' % i))
-        
-#         img_input = img_input.resize((512, 512))
-
-#         input_ = np.asarray(img_input)
-#         image = Image.fromarray(input_)
-#         image.save('input_%02d.png' % i)
 class Dataset(torch.utils.data.Dataset):
     ##데이터가 존재하는 디렉토리 주소와 변환을 매개변수로 지정.
         def __init__(self, data_dir, transform=None):
@@ -43,13 +34,21 @@ class Dataset(torch.utils.data.Dataset):
             label = np.asarray(label)
             input = np.asarray(input) 
 
+            # if np.random.rand() > 0.5:
+            #     aug = iaa.MultiplyAndAddToBrightness(mul=0.7)
+            #     input = aug(return_batch = False, image = input)
+            
+            # aug = iaa.ChannelShuffle(0.5)
+            # input = aug(return_batch = False, image = input)
+            # aug = iaa.Dropout(p=(0, 0.2), seed=1)
+            # input = aug(return_batch = False, image = input)
+            # label = aug(return_batch = False, image = label)
             if np.random.rand() > 0.5:
-                aug = iaa.MultiplyAndAddToBrightness(mul=0.7)
+                aug = iaa.Affine(shear=(-16, 16), seed=2)
                 input = aug(return_batch = False, image = input)
-            if np.random.rand() > 0.5:
-                aug = iaa.ChannelShuffle(0.35)
-                input = aug(return_batch = False, image = input)
-           
+                label = aug(return_batch = False, image = label)
+
+
             label = label/255.0
             input = input/255.0
 

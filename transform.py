@@ -1,5 +1,7 @@
 import torch
 import numpy as np 
+from PIL import Image
+import imgaug.augmenters as iaa
 
 ## 트랜스폼 구현
 
@@ -29,16 +31,18 @@ class Normalization(object):
 
 class RandomFlip(object):
   def __call__(self, data):
+    
     label, input = data['label'], data['input']
+    
     #오른쪽 왼쪽 뒤집기
-    if np.random.rand() > 0.5:
+    if np.random.rand() < 0.5:
       label = np.fliplr(label)
       input = np.fliplr(input)
     #위아래 뒤집기
-    if np.random.rand() > 0.5:
-       label = np.flipud(label)
-       input = np.flipud(input)
-    
+    if np.random.rand() < 0.5:
+      label = np.flipud(label)
+      input = np.flipud(input)
+      
     data = {'label': label, 'input': input}
-
+    
     return data
