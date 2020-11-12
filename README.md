@@ -62,18 +62,18 @@ flip으로 불린 80개의 데이터를 사용했을 때의 결과들은 모두 
 
 그리고도 안되면,
 
-https://github.com/clguo/SA-UNet 여기서 비슷한 데이터를 가지고 엄청난 성능을 보여주었기 때문에
+https://github.com/clguo/SA-UNet 여기서 엄청난 성능을 보여주었기 때문에
 
 하나하나씩 공들여서 봐야겠다.
 
 슬쩍 본 바로는, 원래 데이터는 10개 였는데 augmentation으로 260개까지 늘려서 training을 진행했다.
 
-일반 unet과 다른 점은 중간에 spatial attention module을 추가한 것인데 베이스라인과 많은 성능차이가 난다.(심지어 피쳐맵 채널수도 기본 유넷보다 한참 작다.)
+일반 unet과 다른 점은 중간에 over fitting을 줄이기 위해 drop box를 추가하고, conv 레이어를 줄이고, spatial attention module을 추가한 것인데 베이스라인과 많은 성능차이가 난다.(심지어 피쳐맵 채널수도 기본 유넷보다 한참 작다.)
 
-아마도 augmentation 절반 attention module 절반 영향을 끼치는 것 같은데
+다른 점이 좀 있지만 아마도 내 생각엔 augmentation 절반정도 영향을 끼치는 것 같은데
 
 내가 augmentation을 했을 때 성능이 비슷한거 보면,
 
-내가 무언가 단단히 잘못하고 있는 것 같다. augmentation 하이퍼 파라미터 조절던지 오류없는 괴상한 코드던지.
+내가 무언가 단단히 잘못하고 있는 것 같다. augmentation 하이퍼 파라미터 조절이던지 괴상한 코드던지.
 
 다시 눈 부릅뜨고 정리해보자.
