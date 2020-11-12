@@ -8,13 +8,16 @@ import torch
 import torch.nn as nn
 import numpy as np
 import wandb
-# 1. Start a W&B run
+# import imgcat
+# # 1. Start a W&B run
 wandb.init(project='gpt3')
 
-# 2. Save model inputs and hyperparameters
+# # 2. Save model inputs and hyperparameters
 config = wandb.config
 wandb.config.learning_rate = 0.001
 wandb.config.epochs = 100
+wandb.config.train = 16
+wandb.config.batch_size = 4
 
 lr = 0.001
 batch_size = 4
@@ -28,12 +31,12 @@ log_dir = '/daintlab/home/tmddnjs3467/unet'
 
 transform = transforms.Compose([Normalization(mean=0.5, std=0.5), RandomFlip(),
                                 ToTensor()])
-dataset_train = Dataset(data_dir=os.path.join(data_dir, 'train(png)'), 
+dataset_train = Dataset(data_dir=os.path.join(data_dir, 'train(graypng16)'), 
                         transform=transform)
 loader_train = DataLoader(dataset_train, batch_size=batch_size, shuffle=True,
                           num_workers=8)
 
-dataset_val = Dataset(data_dir=os.path.join(data_dir, 'val(png)'), 
+dataset_val = Dataset(data_dir=os.path.join(data_dir, 'val(graypng4)'), 
                       transform=transform)
 loader_val = DataLoader(dataset_val, batch_size=batch_size, shuffle=False, 
                         num_workers=8)
@@ -73,7 +76,6 @@ fn_class = lambda x: 1.0 * (x > 0.5)
 
 # writer_train = SummaryWriter(log_dir=os.path.join(log_dir, 'train'))
 # writer_val = SummaryWriter(log_dir=os.path.join(log_dir, 'val'))
-# vis = visdom.Visdom()
 
 ##네트워크 저장하는 함수
 def save(ckpt_dir, net, optim, epoch):
@@ -135,16 +137,7 @@ for epoch in range(st_epoch + 1, num_epoch + 1):
     loss_arr += [loss.item()]
     print('TRAIN: EPOCH %04d / %04d | BATCH %04d / %04d | LOSS %.4f ' %
           (epoch, num_epoch, batch, num_batch_train, np.mean(loss_arr)))
-  #   # Tensorboard 저장하기
-  #   label = fn_tonumpy(label)
-  #   input = fn_tonumpy(fn_denorm(input, mean=0.5, std=0.5))
-  #   output = fn_tonumpy(fn_class(output))
-  #   #라벨 이미지 아웃풋 영상을 텐서보드에 작성하는 부분
-  #   writer_train.add_image('label', label, num_batch_train * (epoch - 1) + batch, dataformats='NHWC')
-  #   writer_train.add_image('input', input, num_batch_train * (epoch - 1) + batch, dataformats='NHWC')
-  #   writer_train.add_image('output', output, num_batch_train * (epoch - 1) + batch, dataformats='NHWC')
-  # #로스를 작성
-  # writer_train.add_scalar('loss', np.mean(loss_arr), epoch)
+  #wandb 저장
   wandb.log({"train loss": np.mean(loss_arr)})
   # 백프로파게이션 validation과정에선 필요없음
   with torch.no_grad():
@@ -164,19 +157,15 @@ for epoch in range(st_epoch + 1, num_epoch + 1):
       loss_arr += [loss.item()]
       print('VAL: EPOCH %04d / %04d | BATCH %04d / %04d | LOSS %.4f ' %
           (epoch, num_epoch, batch, num_batch_val, np.mean(loss_arr)))
-      # # Tensorboard 저장하기
-      # label = fn_tonumpy(label)
-      # input = fn_tonumpy(fn_denorm(input, mean=0.5, std=0.5))
-      # output = fn_tonumpy(fn_class(output))
-      # #라벨 이미지 아웃풋 영상을 텐서보드에 작성하는 부분
-      # writer_val.add_image('label', label, num_batch_val * (epoch - 1) + batch, dataformats='NHWC')
-      # writer_val.add_image('input', input, num_batch_val * (epoch - 1) + batch, dataformats='NHWC')
-      # writer_val.add_image('output', output, num_batch_val * (epoch - 1) + batch, dataformats='NHWC')
-    # 로스를 작성
+      #원래 이미지들
+      label = fn_tonumpy(label)
+      input = fn_tonumpy(fn_denorm(input, mean=0.5, std=0.5))
+      output = fn_tonumpy(fn_class(output))
+      
+    # 로그 작성
     wandb.log({"input": [wandb.Image(input[3], caption="input")], "label": [wandb.Image(label[3], caption="label")],
                 "output": [wandb.Image(output[3], caption="output")]})
     wandb.log({"val loss": np.mean(loss_arr)})
-    # writer_val.add_scalar('loss', np.mean(loss_arr), epoch)
   if epoch % 100 == 0:
         save(ckpt_dir=ckpt_dir, net=net, optim=optim, epoch=epoch)
 

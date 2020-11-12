@@ -28,7 +28,10 @@ class Dataset(torch.utils.data.Dataset):
   
   def __getitem__(self,index):
     ##원하는 데이터 가져오기
-    input = np.load(os.path.join(self.data_dir, self.lst_input[index]))
+    # input = np.load(os.path.join(self.data_dir, self.lst_input[index]))
+    input = Image.open(os.path.join(self.data_dir, self.lst_input[index]))
+    
+    input = np.asarray(input)
 
     input = input/255.0
 
@@ -67,7 +70,7 @@ class Normalization(object):
     
     return data
 
-test_dir = '/daintlab/home/tmddnjs3467/workspace/vessel/test/numpy'
+test_dir = '/daintlab/home/tmddnjs3467/workspace/vessel/test/graypng'
 ckpt_dir = '/daintlab/home/tmddnjs3467/workspace/checkpoint'
 batch_size = 20
 

@@ -42,6 +42,12 @@ class RandomFlip(object):
     if np.random.rand() < 0.5:
       label = np.flipud(label)
       input = np.flipud(input)
+    # if np.random.rand() > 0.5:
+    #   aug = iaa.Affine(shear=(-16, 16), seed=2)
+    #   label = aug(return_batch = False, image = label)
+    #   input = aug(return_batch = False, image = input)
+    
+    
       
     data = {'label': label, 'input': input}
     
