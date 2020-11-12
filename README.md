@@ -24,6 +24,8 @@
 ##### train loss, validation loss
 <img src='https://user-images.githubusercontent.com/69955858/97574479-a42a8580-1a2e-11eb-95a5-c573dcfeab80.png' width=500 height=330> <img src ='https://user-images.githubusercontent.com/69955858/97573974-e0111b00-1a2d-11eb-9e3e-7616d10cf515.png' width=500 height=330>
 
+<img src='https://user-images.githubusercontent.com/69955858/98187173-abccbb80-1f53-11eb-9358-9d93eb5a0353.png' width=900 height=450>
+
 ### Test
 
 ##### input, output of image 0
@@ -48,18 +50,30 @@
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ### 현재 상황
 
-다양한 augmentation에도 불구하고 iou 스코어의 변화가 작고,
+차라리 input 이미지의 크기를 584 584로 키우고 output의 이미지를 565 584로 줄이면 나을까 싶었는데 역시 결과를 아주 비슷하다.
 
-2번 이미지에 대한 스코어가 상대적으로 작다고 판단하여 overfitting이 발생한다고 판단.
+너무 많은 실험에 로그데이터들과 결과 이미지들이 쌓여 뭐가 뭔지 못알아보겠으나 어차피 성능이 대부분 비슷하여
 
-이를 방지하기 위해 dropout을 적용해봄.
+flip으로 불린 80개의 데이터를 사용했을 때의 결과들은 모두 삭제했다.
 
-그러나 애초에 training image가 적어서인지 큰 변화가 없다.
+트레이닝 데이터 16개로 대표 몇 가지 실험만 해서 저장해야겠다.
 
-그리고 gray sclae로 변형 후 돌려보았을 때 괜찮은 성능을 보였으나,
+첫 시도는 contrastive loss를 적용해보는 것이다. 
 
-이상하게 flip을 통해 데이터를 불렸을때는 엄청나게 underfitting이 됐다.
+그리고도 안되면,
 
-이제 무엇을 적용해야 할지 잘 모르겠다.
+https://github.com/clguo/SA-UNet 여기서 비슷한 데이터를 가지고 엄청난 성능을 보여주었기 때문에
 
-<img src='https://user-images.githubusercontent.com/69955858/98187173-abccbb80-1f53-11eb-9358-9d93eb5a0353.png' width=900 height=450>
+하나하나씩 공들여서 봐야겠다.
+
+슬쩍 본 바로는, 원래 데이터는 10개 였는데 augmentation으로 260개까지 늘려서 training을 진행했다.
+
+일반 unet과 다른 점은 중간에 spatial attention module을 추가한 것인데 베이스라인과 많은 성능차이가 난다.(심지어 피쳐맵 채널수도 기본 유넷보다 한참 작다.)
+
+아마도 augmentation 절반 attention module 절반 영향을 끼치는 것 같은데
+
+내가 augmentation을 했을 때 성능이 비슷한거 보면,
+
+내가 무언가 단단히 잘못하고 있는 것 같다. augmentation 하이퍼 파라미터 조절던지 오류없는 괴상한 코드던지.
+
+다 지우고 다시 해보자.
