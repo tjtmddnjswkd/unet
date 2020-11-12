@@ -63,7 +63,7 @@ class Normalization(object):
   
   def __call__(self, data):
     input = data['input']
-    ##label은 1과 0 으로 이루어져있으므로 노말라이제이션 안함
+    
     input = (input - self.mean) / self.std
 
     data = {'input': input}

@@ -4,7 +4,6 @@ import numpy as np
 import torch
 from PIL import Image
 import imgaug.augmenters as iaa
-import matplotlib.pyplot as plt
 
 class Dataset(torch.utils.data.Dataset):
     ##데이터가 존재하는 디렉토리 주소와 변환을 매개변수로 지정.
