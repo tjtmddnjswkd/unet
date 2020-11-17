@@ -3,7 +3,7 @@ import numpy as np
 from PIL import Image
 import matplotlib.pyplot as plt 
 
-data_dir = '/daintlab/data/seungwon/vessel'
+data_dir = '/daintlab/home/tmddnjs3467/workspace/train(png20gray)'
 
 def change_filename(type, address):
     #원래 training images 파일 이름들 확인
@@ -30,36 +30,50 @@ def change_filename(type, address):
 # change_filename('gif', '%s/training/1st_manual' % data_dir)
 
 #데이터 size확인
-img_label = Image.open(os.path.join('%s/training/1st_manual' % data_dir, '01.gif'))
-img_input = Image.open(os.path.join('%s/training/images' % data_dir, '01.tif'))
+# img_label = Image.open(os.path.join('%s/training/1st_manual' % data_dir, '01.gif'))
+# img_input = Image.open(os.path.join('%s/training/images' % data_dir, '01.tif'))
 
-ny, nx = img_label.size 
+# ny, nx = img_label.size 
 
-ny2, nx2 = img_input.size
+# ny2, nx2 = img_input.size
  
-print('label의 사이즈 (y, x)순\n', ny, nx)
-print('input의 사이즈 (y, x)순\n', ny2, nx2)
+# print('label의 사이즈 (y, x)순\n', ny, nx)
+# print('input의 사이즈 (y, x)순\n', ny2, nx2)
 
 #training, validation 을 random하게 나누기 위한 id
-id_num = np.arange(20)
-np.random.shuffle(id_num)
-id_num
+# id_num = np.arange(20)
+# np.random.shuffle(id_num)
+# id_num
 
 #나눈 데이터셋에 대한 폴더 생성
-dir_save_train = os.path.join(data_dir, 'train(16)')
-dir_save_val = os.path.join(data_dir, 'val(4)')
+# dir_save_train = os.path.join(data_dir, 'train(16)')
+# dir_save_val = os.path.join(data_dir, 'val(4)')
 
-if not os.path.exists(dir_save_train):
-  os.makedirs(dir_save_train)
+# if not os.path.exists(dir_save_train):
+#   os.makedirs(dir_save_train)
 
-if not os.path.exists(dir_save_val):
-  os.makedirs(dir_save_val)
+# if not os.path.exists(dir_save_val):
+#   os.makedirs(dir_save_val)
 
+def image_to_image(data_dir, target, size):
+    for i in range(20):
+        img_label = Image.open(os.path.join('%s/training/1st_manual' % data_dir, '%02d.gif' % i))
+        img_input = Image.open(os.path.join('%s/training/images' % data_dir, '%02d.tif' % i))
+        
+        img_label = img_label.resize((size, size))
+        img_input = img_input.resize((size, size))
+
+        # label_ = np.asarray(img_label)
+        # input_ = np.asarray(img_input)
+
+        img_input.save(os.path.join(target, 'input_%02d.png' % i))
+        img_label.save(os.path.join(target, 'label_%02d.png' % i))
+  
 def convert_image_to_numpy(start, end, size, type):
     num = start
     for i in range(start,end):
-        img_label = Image.open(os.path.join('%s/training/1st_manual' % data_dir, '%02d.gif' % id_num[i]))
-        img_input = Image.open(os.path.join('%s/training/images' % data_dir, '%02d.tif' % id_num[i]))
+        img_label = Image.open(os.path.join('%s/training/1st_manual' % data_dir, '%02d.gif' % i))
+        img_input = Image.open(os.path.join('%s/training/images' % data_dir, '%02d.tif' % i))
         
         img_label = img_label.resize((size, size))
         img_input = img_input.resize((size, size))
@@ -92,14 +106,14 @@ def convert_image_to_numpy(start, end, size, type):
 if not os.path.exists('%s/test/numpy' % data_dir):
     os.makedirs('%s/test/numpy' % data_dir)
 
-for i in range(1,21):
-        img_input = Image.open(os.path.join('%s/test/images' % data_dir, '%02d_test.tif' % i))
+# for i in range(1,21):
+#         img_input = Image.open(os.path.join('%s/test/images' % data_dir, '%02d_test.tif' % i))
         
-        img_input = img_input.resize((512, 512))
+#         img_input = img_input.resize((512, 512))
 
-        input_ = np.asarray(img_input)
+#         input_ = np.asarray(img_input)
         
-        plt.imsave(os.path.join(result_dir, 'output_%02d.png' % i), result_, cmap='gray')
+#         plt.imsave(os.path.join(result_dir, 'output_%02d.png' % i), result_, cmap='gray')
         
 # ##실제 input label 확인
 # plt.subplot(121)
@@ -110,3 +124,7 @@ for i in range(1,21):
 # plt.imshow(input_, cmap='gray')
 # plt.title('input')
 # plt.show()
+if __name__ == "__main__":
+
+    data_dir = '/daintlab/home/tmddnjs3467/workspace/vessel'
+    image_to_image(data_dir, '/daintlab/home/tmddnjs3467/workspace/vessel/train(png20gray)', 592)

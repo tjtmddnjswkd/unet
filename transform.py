@@ -2,9 +2,9 @@ import torch
 import numpy as np 
 from PIL import Image
 import imgaug.augmenters as iaa
-
+import imgaug as ia
 ## 트랜스폼 구현
-
+ia.seed(2)
 class ToTensor(object):
   def __call__(self, data):
     label, input = data['label'], data['input']
@@ -42,12 +42,11 @@ class RandomFlip(object):
     if np.random.rand() < 0.5:
       label = np.flipud(label)
       input = np.flipud(input)
-    # if np.random.rand() > 0.5:
-    #   aug = iaa.Affine(shear=(-16, 16), seed=2)
-    #   label = aug(return_batch = False, image = label)
-    #   input = aug(return_batch = False, image = input)
-    
-    
+    if np.random.rand() < 0.5:
+      aug = iaa.Affine(rotate=(-45, 45), seed=2)
+      label = aug(return_batch = False, image = label)
+      input = aug(return_batch = False, image = input)
+          
       
     data = {'label': label, 'input': input}
     

@@ -30,10 +30,7 @@ class Dataset(torch.utils.data.Dataset):
     label = np.load(os.path.join(self.data_dir, self.lst_label[index]))
     input = np.load(os.path.join(self.data_dir, self.lst_input[index]))
     
-
-    # aug = iaa.ChannelShuffle(0.5)
-    # input = aug(return_batch = False, image = input)
-    # if np.random.rand() > 0.5:
+   # if np.random.rand() > 0.5:
     #   input.astype(np.uint8)
     #   aug = iaa.MultiplyAndAddToBrightness(mul=0.3)
     #   input = aug(return_batch = False, image = input)
