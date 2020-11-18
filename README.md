@@ -17,7 +17,7 @@
 <img src='https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FUcMLK%2FbtqDQupfFnY%2F8aCl8icgtwVKERCWfzfK41%2Fimg.png' width=700 height=600>
 
 ### Train
-| id | Resize Shape | Learning Rate| Optimizer  |  Loss Function  | Mean of dice score for test data | Min of dice score for test data | Max of dice score for test data | Augment |
+| id | Resize Shape | Learning Rate| Optimizer  |  Loss Function  | Mean of dice score | Min of dice score | Max of dice score | Augment |
 |:--:|:------------:|:---:|:---:|:--:|:--:|:--:|:--:|:--:|
 |  1 | 512 x 512 |0.001|Adam|BCEWithLogitsLoss|0.7744|0.6374(2)|0.8217|None|
 |  2 | 592 x 592 |0.001|Adam|BCEWithLogitsLoss|0.7789|0.6904(2)|0.8211|None|
