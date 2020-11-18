@@ -18,7 +18,7 @@
 
 ### Train
 | id | Resize Shape | Learning Rate| Optimizer  |  Loss Function  | Mean of dice score for test data | Min of dice score for test data | Max of dice score for test data | Augment |
-|:--:|:------------:|:---:|:---:|:--:|:--:|:--:|:--:|
+|:--:|:------------:|:---:|:---:|:--:|:--:|:--:|:--:|:--:|
 |  1 | 512 x 512 |0.001|Adam|BCEWithLogitsLoss|0.7744|0.6374(2)|0.8217|None|
 |  2 | 592 x 592 |0.001|Adam|BCEWithLogitsLoss|0.7789|0.6904(2)|0.8211|None|
 |  3 | 592 x 592 |0.001|Adam|BCEWithLogitsLoss|0.7805|0.7433(2)|0.8261|gray|
