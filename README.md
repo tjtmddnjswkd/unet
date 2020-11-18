@@ -16,66 +16,40 @@
 ##### UNET 사용
 <img src='https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FUcMLK%2FbtqDQupfFnY%2F8aCl8icgtwVKERCWfzfK41%2Fimg.png' width=700 height=600>
 
-### Train
+### Train and Test
 | id | Resize Shape | Learning Rate| Optimizer  |  Loss Function  | Mean of dice score | Min of dice score | Max of dice score | Augment |
 |:--:|:------------:|:---:|:---:|:--:|:--:|:--:|:--:|:--:|
-|  1 | 512 x 512 |0.001|Adam|BCEWithLogitsLoss|0.7744|0.6374(2)|0.8217|None|
-|  2 | 592 x 592 |0.001|Adam|BCEWithLogitsLoss|0.7789|0.6904(2)|0.8211|None|
-|  3 | 592 x 592 |0.001|Adam|BCEWithLogitsLoss|0.7805|0.7433(2)|0.8261|gray|
-|  4 | 592 x 592 |0.001|Adam|BCEWithLogitsLoss||||gray+flip+rotate(45)|
-|  5 | 592 x 592 |0.001|Adam|BCEWithLogitsLoss|16|4|||
+|  1 | 512 |0.001|Adam|BCEWithLogitsLoss|0.7744|0.6374(2)|0.8217|None|
+|  2 | 592 |0.001|Adam|BCEWithLogitsLoss|0.7789|0.6904(2)|0.8211|None|
+|  3 | 592 |0.001|Adam|BCEWithLogitsLoss|0.7805|0.7433(2)|0.8261|gray|
+|  4 | 592 |0.001|Adam|BCEWithLogitsLoss|0.7931|0.7650(2)|0.8295|gray+flip+rotate(45)|
+|  5 | 592 |0.001|Adam|BCEWithLogitsLoss|0.7892|0.7565(16)|0.8264|gray+flip+rotate(45)+dropout|
 
 ##### train loss, validation loss
 <img src='https://user-images.githubusercontent.com/69955858/99534124-47e1d280-29ea-11eb-95bb-7348e15518b7.png' width=900 height=350>
 
-### Test
-train 64 val 16
-##### input, output of image 0
-<img src='https://user-images.githubusercontent.com/69955858/97461875-83582680-1981-11eb-9425-8b24348c23aa.png' width='300' height='300'> <img src='https://user-images.githubusercontent.com/69955858/97461758-61f73a80-1981-11eb-8226-9ded145721f2.png' width='300' height='300'>
+### Test result
+id - 4
 
-##### input, output of image 2
-<img src='https://user-images.githubusercontent.com/69955858/97463727-67558480-1983-11eb-8d24-22cac46a4148.png' width='300' height='300'> <img src='https://user-images.githubusercontent.com/69955858/97463746-69b7de80-1983-11eb-8cab-d0c743472c69.png' width='300' height='300'>
+##### input and output of image 0
+<img src='https://user-images.githubusercontent.com/69955858/97461875-83582680-1981-11eb-9425-8b24348c23aa.png' width='300' height='300'> 
+<img src='https://user-images.githubusercontent.com/69955858/99538409-47e4d100-29f0-11eb-8fb9-edc062787ac3.png' width='300' height='300'>
 
+result in base U-Net
 
-| image number |  0  |  1  |  2  |  3  |  4  |  5  |  6  |  7  |  8  |  9  |
-|:------------:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
-|  dice score  |0.788|0.827|0.628|0.808|0.793|0.775|0.772|0.742|0.762|0.782|
-      
-| image number |  10 |  11 |  12 |  13 |  14 |  15 |  16 |  17 |  18 |  19 |
-|:------------:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
-|  dice score  |0.770|0.797|0.789|0.792|0.768|0.799|0.757|0.784|0.804|0.781|
-          
-| dice_max |  dice_min  |  dice_mean  |
-|:------------:|:---:|:---:|
-|  0.827|0.628|0.776|
+<img src='https://user-images.githubusercontent.com/69955858/99538692-ab6efe80-29f0-11eb-8346-6151366c983b.png' width='300' height='300'>
+
+result in SA-Unet
+
+<img src='https://user-images.githubusercontent.com/69955858/99538852-e3764180-29f0-11eb-86ca-e619914d7bfd.png' width='300' height='300'>
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ### 현재 상황
 
-차라리 input 이미지의 크기를 584 584로 키우고 output의 이미지를 565 584로 줄이면 나을까 싶었는데 역시 결과를 아주 비슷하다.
+지금까지의 실험 세팅이 완전히 잘못되어 전부 삭제 후 다시 진행하였다.
 
-너무 많은 실험에 로그데이터들과 결과 이미지들이 쌓여 뭐가 뭔지 못알아보겠어서 어차피 성능이 대부분 비슷하여
+정확하게 어떤 것이 성능이 나아지는지 알기 위해 하나씩 하나씩 추가하면서 천천히 정리해보았다.
 
-flip으로 불린 80개의 데이터를 사용했을 때의 결과들은 모두 삭제했다.
+현재까지는 gray+flip+rotate(45) 를 적용하였을 때의 결과가 가장 좋았다.
 
-트레이닝 데이터 16개로 대표 몇 가지 실험만 해서 저장해야겠다.
-
-첫 시도는 contrastive loss를 적용해보는 것이다. 
-
-그리고도 안되면,
-
-https://github.com/clguo/SA-UNet 여기서 엄청난 성능을 보여주었기 때문에
-
-하나하나씩 공들여서 봐야겠다.
-
-슬쩍 본 바로는, 원래 데이터는 10개 였는데 augmentation으로 260개까지 늘려서 training을 진행했다.
-
-일반 unet과 다른 점은 중간에 over fitting을 줄이기 위해 drop box를 추가하고, conv 레이어를 줄이고, spatial attention module을 추가한 것인데 베이스라인과 많은 성능차이가 난다.(심지어 피쳐맵 채널수도 기본 유넷보다 한참 작다.)
-
-다른 점이 좀 있지만 아마도 내 생각엔 augmentation 절반정도 영향을 끼치는 것 같은데
-
-내가 augmentation을 했을 때 성능이 비슷한거 보면,
-
-내가 무언가 단단히 잘못하고 있는 것 같다. augmentation 하이퍼 파라미터 조절이던지 괴상한 코드던지.
-
-다시 눈 부릅뜨고 정리해보자.
+왜 RGB보다 gray가 더 좋은 지는 잘 모르겠다.
