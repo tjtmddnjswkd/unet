@@ -70,7 +70,7 @@ class Normalization(object):
     
     return data
 
-test_dir = '/daintlab/home/tmddnjs3467/workspace/vessel/test/graypng'
+test_dir = '/daintlab/home/tmddnjs3467/workspace/vessel/test/gray592'
 ckpt_dir = '/daintlab/home/tmddnjs3467/workspace/checkpoint'
 batch_size = 4
 
@@ -94,7 +94,7 @@ num_batch_test = np.ceil(num_data_test / batch_size)
 ##네트워크 불러오는 함수
 def load(ckpt_dir, net):
 
-  dict_model = torch.load('%s/%s' % (ckpt_dir, 'model_epoch100(512)(filp+gray+rotate).pth'))
+  dict_model = torch.load('%s/%s' % (ckpt_dir, 'model_epoch100_loss0.096(592)(gray+flip+rotate(45)+dropout).pth'))
 
   net.load_state_dict(dict_model['net'])
   
@@ -107,7 +107,7 @@ fn_class = lambda x: 1.0 * (x > 0.5)
 ##test
 import matplotlib.pyplot as plt
 #이미지 저장할 폴더
-result_dir = '/daintlab/home/tmddnjs3467/workspace/vessel/t20b4size512(real)(flip+gray+rotate)'
+result_dir = '/daintlab/home/tmddnjs3467/workspace/vessel/size592(gray+flip+rotate(45)+dropout)'
 
 if not os.path.exists(result_dir):
     os.makedirs(result_dir)

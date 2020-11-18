@@ -32,14 +32,14 @@ class Dataset(torch.utils.data.Dataset):
 
             label = np.asarray(label)
             input = np.asarray(input) 
-
-            aug = iaa.ChannelShuffle(0.5)
-            input = aug(return_batch = False, image = input)
-            if np.random.rand() < 0.5:
-                aug = iaa.Dropout(p=(0, 0.3), seed=2)
-                input = aug(return_batch = False, image = input)
-                label = aug(return_batch = False, image = label)
-        
+            # if np.random.rand() < 0.5: 
+            #     aug = iaa.Dropout(p=(0, 0.2), seed=2)
+            #     label = aug(return_batch = False, image = label)
+            #     aug = iaa.Dropout(p=(0, 0.2), seed=2)
+            #     input = aug(return_batch = False, image = input)
+            # aug = iaa.ChannelShuffle(0.5)
+            # input = aug(return_batch = False, image = input)
+            
             label = label/255.0
             input = input/255.0
 

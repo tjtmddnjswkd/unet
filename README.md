@@ -7,9 +7,9 @@
 ![image](https://user-images.githubusercontent.com/69955858/96858840-bdb25700-149b-11eb-80e1-f206e111e4b7.png)
 ![image](https://user-images.githubusercontent.com/69955858/96858857-c1de7480-149b-11eb-8b25-7f521722bf03.png)
 
-| Size of Image |  Num of Data  |  Channels of Input Image  |Channel of Mask|
-|:------------:|:---:|:---:|:---:|
-| 584 x 565|20|3|1|
+| Size of Image |  Num of Data  |  Channels of Input Image  |Channel of Mask| Num of Train | Num of Val|
+|:------------:|:---:|:---:|:---:||:--:||:--:|
+| 584 x 565|20|3|1|16|4|
   
 ### Model
 
@@ -17,14 +17,16 @@
 <img src='https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FUcMLK%2FbtqDQupfFnY%2F8aCl8icgtwVKERCWfzfK41%2Fimg.png' width=700 height=600>
 
 ### Train
-| Resize Shape | Learning Rate| Optimizer  |  Loss Function  |Num of Train| Num of Val|
-|:------------:|:---:|:---:|:--:|:--:|:--:|
-| 512 x 512|0.001|Adam|BCEWithLogitsLoss|16|4|
+| id | Resize Shape | Learning Rate| Optimizer  |  Loss Function  | Mean of dice score for test data | Min of dice score for test data | Max of dice score for test data | Augment |
+|:--:|:------------:|:---:|:---:|:--:|:--:|:--:|:--:|
+|  1 | 512 x 512 |0.001|Adam|BCEWithLogitsLoss|0.7744|0.6374(2)|0.8217|None|
+|  2 | 592 x 592 |0.001|Adam|BCEWithLogitsLoss|0.7789|0.6904(2)|0.8211|None|
+|  3 | 592 x 592 |0.001|Adam|BCEWithLogitsLoss|0.7805|0.7433(2)|0.8261|gray|
+|  4 | 592 x 592 |0.001|Adam|BCEWithLogitsLoss||||gray+flip+rotate(45)|
+|  5 | 592 x 592 |0.001|Adam|BCEWithLogitsLoss|16|4|||
 
 ##### train loss, validation loss
-<img src='https://user-images.githubusercontent.com/69955858/97574479-a42a8580-1a2e-11eb-95a5-c573dcfeab80.png' width=500 height=330> <img src ='https://user-images.githubusercontent.com/69955858/97573974-e0111b00-1a2d-11eb-9e3e-7616d10cf515.png' width=500 height=330>
-
-<img src='https://user-images.githubusercontent.com/69955858/98187173-abccbb80-1f53-11eb-9358-9d93eb5a0353.png' width=900 height=450>
+<img src='https://user-images.githubusercontent.com/69955858/99534124-47e1d280-29ea-11eb-95bb-7348e15518b7.png' width=900 height=350>
 
 ### Test
 train 64 val 16

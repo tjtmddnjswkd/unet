@@ -3,8 +3,10 @@ import numpy as np
 from PIL import Image
 import imgaug.augmenters as iaa
 import imgaug as ia
+import random
+
+s = int(random.random()*10)
 ## 트랜스폼 구현
-ia.seed(2)
 class ToTensor(object):
   def __call__(self, data):
     label, input = data['label'], data['input']
@@ -34,20 +36,25 @@ class RandomFlip(object):
     
     label, input = data['label'], data['input']
     
-    #오른쪽 왼쪽 뒤집기
+    # 오른쪽 왼쪽 뒤집기
     if np.random.rand() < 0.5:
       label = np.fliplr(label)
       input = np.fliplr(input)
-    #위아래 뒤집기
+    # #위아래 뒤집기
     if np.random.rand() < 0.5:
       label = np.flipud(label)
       input = np.flipud(input)
     if np.random.rand() < 0.5:
-      aug = iaa.Affine(rotate=(-45, 45), seed=2)
+      aug = iaa.Affine(rotate=(-45, 45), seed=s)
       label = aug(return_batch = False, image = label)
-      input = aug(return_batch = False, image = input)
-          
-      
+      aug = iaa.Affine(rotate=(-45, 45), seed=s)
+      input = aug(return_batch = False, image = input)  
+    # if np.random.rand() < 0.5:
+    #   aug = iaa.CropAndPad(percent=(-0.25, 0.25), seed=s)
+    #   label = aug(return_batch = False, image = label)
+    #   aug = iaa.CropAndPad(percent=(-0.25, 0.25), seed=s)
+    #   input = aug(return_batch = False, image = input)
+  
     data = {'label': label, 'input': input}
     
     return data
