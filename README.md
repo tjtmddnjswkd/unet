@@ -8,7 +8,7 @@
 ![image](https://user-images.githubusercontent.com/69955858/96858857-c1de7480-149b-11eb-8b25-7f521722bf03.png)
 
 | Size of Image |  Num of Data  |  Channels of Input Image  |Channel of Mask| Num of Train | Num of Val|
-|:------------:|:---:|:---:|:---:||:--:||:--:|
+|:------------:|:---:|:---:|:---:|:--:|:--:|
 | 584 x 565|20|3|1|16|4|
   
 ### Model
