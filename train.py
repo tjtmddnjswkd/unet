@@ -19,7 +19,7 @@ wandb.config.learning_rate = 0.001
 wandb.config.epochs = 100
 wandb.config.train = 16
 wandb.config.batch_size = 4
-wandb.config.aug = 'flipud+fliplr+rotate(45)+dropout'
+wandb.config.aug = 'flipud+fliplr+rotate(45)2'
 wandb.config.isrgb = 'false'
 wandb.config.size = 592
 
