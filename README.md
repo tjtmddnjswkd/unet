@@ -23,10 +23,12 @@
 |  2 | 592 |0.001|Adam|BCEWithLogitsLoss|0.7789|0.6904(2)|0.8211|None|
 |  3 | 592 |0.001|Adam|BCEWithLogitsLoss|0.7805|0.7433(2)|0.8261|gray|
 |  4 | 592 |0.001|Adam|BCEWithLogitsLoss|0.7931|0.7650(2)|0.8295|gray+flip+rotate(45)|
-|  5 | 592 |0.001|Adam|BCEWithLogitsLoss|0.7892|0.7565(16)|0.8264|gray+flip+rotate(45)+dropout|
 
 ##### train loss, validation loss
-<img src='https://user-images.githubusercontent.com/69955858/99534124-47e1d280-29ea-11eb-95bb-7348e15518b7.png' width=900 height=350>
+<img src='https://user-images.githubusercontent.com/69955858/99617106-ee1cef00-2a61-11eb-8602-d19688f777ce.png' width=900 height=350>
+
+##### like SA-Net
+<img src='https://user-images.githubusercontent.com/69955858/99616933-8f577580-2a61-11eb-8614-7ddfe3a44c36.png' width=900 height=350>
 
 ### Test result
 id - 4
