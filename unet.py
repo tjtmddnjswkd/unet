@@ -16,7 +16,7 @@ class UNet(nn.Module):
             layers += [nn.Conv2d(in_channels=in_channels, out_channels=out_channels,
                         kernel_size=kernel_size, stride=stride, padding=padding,
                         bias=bias)]
-            # layers += [nn.Dropout2d(0.5)]
+            # layers += [nn.Dropout2d(0.1)]
             layers += [nn.BatchNorm2d(num_features=out_channels)]
             layers += [nn.ReLU()]
 
@@ -25,7 +25,7 @@ class UNet(nn.Module):
             return cbr
         
         # 수축단계
-        self.enc1_1 = CBR2d(in_channels=1, out_channels=64)
+        self.enc1_1 = CBR2d(in_channels=3, out_channels=64)
         self.enc1_2 = CBR2d(in_channels=64, out_channels=64)
         self.pool1 = nn.MaxPool2d(kernel_size=2)
 
@@ -68,7 +68,7 @@ class UNet(nn.Module):
         
         # ##like SA
         # # 수축단계
-        # self.enc1_1 = CBR2d(in_channels=1, out_channels=16)
+        # self.enc1_1 = CBR2d(in_channels=3, out_channels=16)
         # self.enc1_2 = CBR2d(in_channels=16, out_channels=16)
         # self.pool1 = nn.MaxPool2d(kernel_size=2)
 

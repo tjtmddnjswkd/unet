@@ -1,11 +1,12 @@
 import torch
 import numpy as np 
-from PIL import Image
+from PIL import Image, ImageEnhance
 import imgaug.augmenters as iaa
 import imgaug as ia
 import random
+import sys
 
-s = int(random.random()*10)
+s = random.randint(1,sys.maxsize)
 ## 트랜스폼 구현
 class ToTensor(object):
   def __call__(self, data):
@@ -45,16 +46,11 @@ class RandomFlip(object):
       label = np.flipud(label)
       input = np.flipud(input)
     if np.random.rand() < 0.5:
-      aug = iaa.Affine(rotate=(-45, 45), seed=s)
+      aug = iaa.Affine(rotate=(1, 360), seed=s)
       label = aug(return_batch = False, image = label)
-      aug = iaa.Affine(rotate=(-45, 45), seed=s)
-      input = aug(return_batch = False, image = input)  
-    # if np.random.rand() < 0.5:
-    #   aug = iaa.CropAndPad(percent=(-0.25, 0.25), seed=s)
-    #   label = aug(return_batch = False, image = label)
-    #   aug = iaa.CropAndPad(percent=(-0.25, 0.25), seed=s)
-    #   input = aug(return_batch = False, image = input)
-  
+      aug = iaa.Affine(rotate=(1, 360), seed=s)
+      input = aug(return_batch = False, image = input)
+    
     data = {'label': label, 'input': input}
     
     return data
