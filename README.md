@@ -64,6 +64,9 @@ augmentation을 적용해도 기존 Unet의 성능보다 한참 떨어진다. (�
 
 <img src='https://user-images.githubusercontent.com/69955858/100301846-65abca80-2fdc-11eb-8c19-bd80a7478eb0.png'>
 
+
+<img src='https://user-images.githubusercontent.com/69955858/100306585-1ae38000-2fe7-11eb-834b-866d2c71634f.png'>
+
 그래프를 보면 iou값이 train에 비해 val에 대해 더 높게 나오는 것을 볼 수 있는데 이유를 모르겠다.
 
 augmentation이 적용이 안되는 것인가도 확인해봤는데 잘 되는 것으로 확인했다.
