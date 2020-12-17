@@ -84,3 +84,6 @@ none -> +flip -> +randombrightly -> +randomcontrast -> +gaussianblur -> +randomr
 
 iou accuracy loss 값이 아무것도 적용 안했을 때랑 크게 다른점이안보인다.
 
+![image](https://user-images.githubusercontent.com/69955858/102435885-bef69f00-405a-11eb-9728-026859cb5b49.png)
+![image](https://user-images.githubusercontent.com/69955858/102436005-f7967880-405a-11eb-9a3d-950a9eea650c.png)
+![image](https://user-images.githubusercontent.com/69955858/102436045-0d0ba280-405b-11eb-8e1b-70cecdd35236.png)
