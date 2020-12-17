@@ -84,6 +84,18 @@ none -> +flip -> +randombrightly -> +randomcontrast -> +gaussianblur -> +randomr
 
 iou accuracy loss 값이 아무것도 적용 안했을 때랑 크게 다른점이안보인다.
 
-![image](https://user-images.githubusercontent.com/69955858/102435885-bef69f00-405a-11eb-9728-026859cb5b49.png)
-![image](https://user-images.githubusercontent.com/69955858/102436005-f7967880-405a-11eb-9a3d-950a9eea650c.png)
-![image](https://user-images.githubusercontent.com/69955858/102436045-0d0ba280-405b-11eb-8e1b-70cecdd35236.png)
+
+<img src='https://user-images.githubusercontent.com/69955858/102435885-bef69f00-405a-11eb-9728-026859cb5b49.png'>
+
+<img src='https://user-images.githubusercontent.com/69955858/102436005-f7967880-405a-11eb-9a3d-950a9eea650c.png'>
+
+<img src='https://user-images.githubusercontent.com/69955858/102436045-0d0ba280-405b-11eb-8e1b-70cecdd35236.png'>
+
+이것은 augmentation의 문제가 아니라고 이제 강하게 확신하여 
+SA-Unet을 파이토치로 구현 하던 것에만 몰두해야겠다.
+
+하이퍼 파라미터에 대해서 크게 튜닝하지는 않았지만, flip rotation을 했을 때도 성능향상이 그리 있지 않으므로
+그냥 좋은 모델을 구현해보면서 왜 잘나오나 알아봐야겠다.
+
+(그리고 제일 괜찮았던 flip+rotation과 모든 augmentation을 적용한 모델로 혹시나 하는 마음에 테스트 해보았으나,
+역시나 심각한 오버피팅 문제가 발견되었다.)
