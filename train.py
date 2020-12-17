@@ -1,7 +1,8 @@
 from unet import UNet
 from dataset2 import Dataset
 from dataset import Dataset_train
-from transform import Normalization, RandomFlip, ToTensor
+from dataset3 import Dataset_Image
+from transform2 import Normalization, RandomFlip, ToTensor, RandomBrightly, RandomContrast, GaussianBlur, RandomRotate
 from torchvision import transforms
 from torch.utils.data import DataLoader
 import os
@@ -14,7 +15,7 @@ from measurement import iouscore, accuracy
 
 # import imgcat
 # 1. Start a W&B run
-wandb.init(project="Retina vessel data segmentation")
+wandb.init(project="Retina vessel data segmentation pytorch")
 parser = argparse.ArgumentParser()
 parser.add_argument('--lr',
                 type=float,
@@ -26,7 +27,7 @@ parser.add_argument('--epochs',
                 help='num epochs')
 parser.add_argument('--train_batch',
                 type=int,
-                default=8,
+                default=4,
                 help='train batch size')
 parser.add_argument('--val_batch',
                 type=int,
@@ -34,7 +35,7 @@ parser.add_argument('--val_batch',
                 help='validation batch size')
 parser.add_argument('--model_name',
                 type=str,
-                default='SAaug',
+                default='pytorchaug',
                 help='model name')
 parser.add_argument('--train_data_set',
                 type=str,
@@ -48,7 +49,7 @@ parser.add_argument('--gpu',
                 type=str,
                 default='0',
                 help='gpu number')
-
+print()
 args = parser.parse_args()
 wandb.config.update(args)
 
@@ -62,15 +63,15 @@ data_dir = '/daintlab/home/tmddnjs3467/workspace/vessel'
 ckpt_dir = '/daintlab/home/tmddnjs3467/workspace/checkpoint'
 log_dir = '/daintlab/home/tmddnjs3467/unet'
 
-transform = transforms.Compose([Normalization(mean=0.5, std=0.5), RandomFlip(),
-                                ToTensor()])
-dataset_train = Dataset(data_dir=os.path.join(data_dir, args.train_data_set), 
+transform = transforms.Compose([ToTensor(), RandomRotate(), RandomFlip(),
+                                Normalization(mean=0.5, std=0.5)])
+dataset_train = Dataset_Image(data_dir=os.path.join(data_dir, args.train_data_set), 
                         transform=transform)
 loader_train = DataLoader(dataset_train, batch_size=args.train_batch, shuffle=True,
                           num_workers=8)
 
-dataset_val = Dataset(data_dir=os.path.join(data_dir, args.test_data_set), 
-                      transform=transforms.Compose([Normalization(mean=0.5, std=0.5), ToTensor()]))
+dataset_val = Dataset_Image(data_dir=os.path.join(data_dir, args.test_data_set), 
+                      transform=transforms.Compose([ToTensor(), Normalization(mean=0.5, std=0.5)]))
 loader_val = DataLoader(dataset_val, batch_size=args.val_batch, shuffle=False, 
                         num_workers=8)
 print('input의 shape는\n', dataset_train[0]['input'].shape)
@@ -130,11 +131,15 @@ for epoch in range(st_epoch + 1, args.epochs + 1):
   ##네트워크에게 트레인이라는 것을 알려줌
   net.train()
   loss_arr = []
+  iou_arr = []
+  acc_arr = []
   for batch, data in enumerate(loader_train, 1):
     # forward pass
     label = data['label'].to(device)
     input = data['input'].to(device)
-
+    input = input.type(torch.float32)
+    # print(input.dtype)
+    # import pdb; pdb.set_trace()
     output = net(input)
     # backward pass
     optim.zero_grad()
@@ -150,22 +155,24 @@ for epoch in range(st_epoch + 1, args.epochs + 1):
     loss_arr += [loss.item()]
     print('TRAIN: EPOCH %04d / %04d | BATCH %04d / %04d | LOSS %.4f | IOU %.4f | ACC %.4f' %
           (epoch, args.epochs, batch, num_batch_train, np.mean(loss_arr), iouscore(output, label), accuracy(output, label)))
-  dataset_train = Dataset(data_dir=os.path.join(data_dir, args.train_data_set), 
-                      transform=transform)
-  loader_train = DataLoader(dataset_train, batch_size=args.train_batch, shuffle=True,
-                        num_workers=8)
+    iou_arr += [iouscore(output, label)]
+    acc_arr += [accuracy(output, label)]
 
   #wandb 저장
   wandb.log({"train loss": np.mean(loss_arr)})
+  wandb.log({"train iou": np.mean(iou_arr)})
+  wandb.log({"train acc": np.mean(acc_arr)})
   # 백프로파게이션 validation과정에선 필요없음
   with torch.no_grad():
     net.eval()
     loss_arr = []
     iou_arr = []
+    acc_arr = []
     for batch, data in enumerate(loader_val, 1):
       # forward pass
       label = data['label'].to(device)
       input = data['input'].to(device)
+      input = input.type(torch.float32)
 
       output = net(input)
 
@@ -180,11 +187,13 @@ for epoch in range(st_epoch + 1, args.epochs + 1):
       print('VAL: EPOCH %04d / %04d | BATCH %04d / %04d | LOSS %.4f | IOU %.4f | ACC %.4f' %
           (epoch, args.epochs, batch, num_batch_val, np.mean(loss_arr), iouscore(output, label), accuracy(output, label)))
       iou_arr += [iouscore(output, label)]
+      acc_arr += [accuracy(output, label)]
     # 로그 작성
     wandb.log({"input": [wandb.Image(input[3], caption="input")], "label": [wandb.Image(label[3], caption="label")],
                 "output": [wandb.Image(output[3], caption="output")]})
     wandb.log({"val loss": np.mean(loss_arr)})
     wandb.log({"val iou": np.mean(iou_arr)})
+    wandb.log({"val acc": np.mean(acc_arr)})
   if epoch % args.epochs == 0:
         save(ckpt_dir=ckpt_dir, net=net, optim=optim, epoch=epoch, loss=np.mean(loss_arr))
 
